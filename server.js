@@ -114,8 +114,8 @@ async function appendViaGoogleApi(data) {
 
 app.get('/', (req, res) => {
   const scriptUrl = readScriptUrl();
-  if (scriptUrl && !req.query.stay) {
-    return res.redirect(302, scriptUrl);
+  if (scriptUrl) {
+    return res.sendFile(path.join(ROOT, 'embed.html'));
   }
   res.sendFile(path.join(ROOT, 'index.html'));
 });
