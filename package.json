@@ -1,0 +1,17 @@
+{
+  "name": "pesquisa-satisfacao-edp",
+  "version": "1.0.0",
+  "description": "Pesquisa de satisfação EDP — Laboratório de Medição",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "express": "^5.2.1",
+    "googleapis": "^173.0.0"
+  }
+}

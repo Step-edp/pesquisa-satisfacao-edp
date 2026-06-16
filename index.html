@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pesquisa de Satisfação — EDP</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="app">
+    <header class="header">
+      <div class="logo">
+        <span class="logo-edp">edp</span>
+      </div>
+      <h1>Pesquisa de Satisfação</h1>
+      <p class="subtitle">Laboratório de Medição &amp; Atendimento EDP</p>
+    </header>
+
+    <div id="progress-wrap" class="progress-wrap hidden">
+      <div class="progress-track">
+        <div id="progress-bar" class="progress-bar"></div>
+      </div>
+      <p id="progress-label" class="progress-label"></p>
+    </div>
+
+    <main class="main">
+      <section id="step-consent" class="card step active">
+        <h2>Bem-vindo(a)!</h2>
+        <p class="intro">
+          Sua opinião é muito importante para melhorarmos nossos serviços.
+          Deseja participar da pesquisa de satisfação?
+        </p>
+        <div class="btn-group">
+          <button type="button" class="btn btn-primary" id="btn-yes">Sim, quero participar</button>
+          <button type="button" class="btn btn-secondary" id="btn-no">Não, obrigado(a)</button>
+        </div>
+      </section>
+
+      <section id="step-flow" class="card step">
+        <div id="flow-block-header" class="block-header hidden"></div>
+        <div id="flow-content"></div>
+        <div class="btn-group" id="flow-actions">
+          <button type="button" class="btn btn-ghost" id="btn-back">Voltar</button>
+          <button type="button" class="btn btn-primary hidden" id="btn-continue">Continuar</button>
+        </div>
+      </section>
+
+      <section id="step-success" class="card step">
+        <div class="success-icon">✓</div>
+        <h2>Obrigado!</h2>
+        <p class="intro">Sua resposta foi registrada com sucesso.</p>
+      </section>
+
+      <section id="step-declined" class="card step">
+        <h2>Tudo bem!</h2>
+        <p class="intro">Agradecemos seu tempo. Sua recusa foi registrada.</p>
+      </section>
+    </main>
+
+    <div id="loading" class="loading hidden">
+      <div class="spinner"></div>
+      <p>Enviando...</p>
+    </div>
+
+    <footer class="footer">
+      <p>EDP — Pesquisa de Satisfação</p>
+    </footer>
+  </div>
+
+  <script src="config.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

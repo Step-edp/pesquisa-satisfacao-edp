@@ -1,0 +1,64 @@
+================================================================================
+  CONECTAR O APP À PLANILHA GOOGLE
+================================================================================
+
+Planilha de destino:
+https://docs.google.com/spreadsheets/d/10w3JN3JqSQYCQ5bHN79RPzs7-2wBHmpOwQqfL9tR7Bc/edit
+
+O link acima é a PLANILHA (onde os dados são salvos).
+Para o app enviar automaticamente, é preciso publicar um "App da Web"
+do Google Apps Script — leva cerca de 2 minutos.
+
+
+PASSO 1 — PUBLICAR O APPS SCRIPT
+---------------------------------
+1. Abra a planilha pelo link acima
+2. Menu: Extensões → Apps Script
+3. Apague qualquer código existente
+4. Copie e cole todo o conteúdo de: google-apps-script/Code.gs
+5. Clique em Salvar (ícone de disquete)
+6. Menu: Implantar → Nova implantação
+7. Clique na engrenagem → selecione "App da Web"
+8. Configure:
+   - Executar como: Eu (seu e-mail)
+   - Quem tem acesso: Qualquer pessoa
+9. Clique em Implantar e autorize as permissões
+10. COPIE a URL gerada (termina em /exec)
+
+
+PASSO 2 — CONFIGURAR O APP
+---------------------------
+Abra o arquivo config.js e cole a URL copiada:
+
+  const SCRIPT_URL = 'https://script.google.com/macros/s/SUA_URL_AQUI/exec';
+
+Salve o arquivo e reinicie o servidor (node server.js).
+
+
+PASSO 3 — TESTAR
+----------------
+1. Acesse http://localhost:3456
+2. Responda a pesquisa
+3. Verifique se a nova linha apareceu na planilha
+
+
+COLUNAS DA PLANILHA
+--------------------
+  A: created_at       → Data/hora
+  B: Nome               → Nome ou "Anônimo"
+  C: Telefone           → Telefone ou "Não Informado"
+  D–O: Questao1–12      → Notas 0 a 5
+  P: Comentario         → Texto livre
+  Q: NaoResponderar     → "1" se recusou participar
+
+Se a planilha tiver só Questao1–11, insira a coluna Questao12
+entre Questao11 e Comentarios.
+
+
+INICIAR O SERVIDOR
+------------------
+  node server.js
+
+Acesse: http://localhost:3456
+
+================================================================================
