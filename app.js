@@ -313,7 +313,7 @@ async function handleSubmit(payload, successStepId) {
     hideProgress();
     showStep(successStepId);
   } catch (err) {
-    alert(err.message);
+    alert('Não foi possível enviar sua resposta. Tente novamente em alguns instantes.');
   } finally {
     setLoading(false);
   }

@@ -14,7 +14,14 @@
 const SPREADSHEET_ID = '10w3JN3JqSQYCQ5bHN79RPzs7-2wBHmpOwQqfL9tR7Bc';
 
 function submitSurvey(data) {
-  return saveToSheet_(data);
+  try {
+    if (!data) {
+      return autorizar();
+    }
+    return saveToSheet_(data);
+  } catch (err) {
+    return { success: false, error: err.message };
+  }
 }
 
 function autorizar() {
@@ -37,14 +44,19 @@ function doPost(e) {
 }
 
 function doGet() {
-  return jsonResponse_({
-    status: 'ok',
-    message: 'Pesquisa de Satisfação EDP — endpoint ativo',
-    spreadsheetId: SPREADSHEET_ID,
-  });
+  return HtmlService.createHtmlOutputFromFile('Index')
+    .setTitle('Pesquisa de Satisfação — EDP')
+    .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
+}
+
+function include(filename) {
+  return HtmlService.createHtmlOutputFromFile(filename).getContent();
 }
 
 function saveToSheet_(data) {
+  if (!data) {
+    throw new Error('Nenhum dado recebido.');
+  }
   const sheet = SpreadsheetApp.openById(SPREADSHEET_ID).getSheets()[0];
 
   sheet.appendRow([

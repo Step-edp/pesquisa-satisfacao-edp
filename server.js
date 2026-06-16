@@ -8,7 +8,6 @@ const ROOT = __dirname;
 
 const app = express();
 app.use(express.json({ limit: '1mb' }));
-app.use(express.static(ROOT));
 
 function readScriptUrl() {
   const localPath = path.join(ROOT, 'config.local.json');
@@ -53,30 +52,6 @@ function buildRow(data) {
     data.comentario || '',
     data.nao_responder || '',
   ];
-}
-
-async function appendViaOAuthSheets(data) {
-  const clientId = process.env.GOOGLE_CLIENT_ID;
-  const clientSecret = process.env.GOOGLE_CLIENT_SECRET;
-  const refreshToken = process.env.GOOGLE_REFRESH_TOKEN;
-
-  if (!clientId || !clientSecret || !refreshToken) {
-    return null;
-  }
-
-  const { google } = require('googleapis');
-  const oauth2 = new google.auth.OAuth2(clientId, clientSecret);
-  oauth2.setCredentials({ refresh_token: refreshToken });
-
-  const sheets = google.sheets({ version: 'v4', auth: oauth2 });
-  await sheets.spreadsheets.values.append({
-    spreadsheetId: SPREADSHEET_ID,
-    range: 'A:Q',
-    valueInputOption: 'USER_ENTERED',
-    requestBody: { values: [buildRow(data)] },
-  });
-
-  return { success: true };
 }
 
 async function appendViaAppsScript(scriptUrl, data) {
@@ -137,13 +112,18 @@ async function appendViaGoogleApi(data) {
   return { success: true };
 }
 
+app.get('/', (req, res) => {
+  const scriptUrl = readScriptUrl();
+  if (scriptUrl && !req.query.stay) {
+    return res.redirect(302, scriptUrl);
+  }
+  res.sendFile(path.join(ROOT, 'index.html'));
+});
+
+app.use(express.static(ROOT, { index: false }));
+
 app.post('/api/submit', async (req, res) => {
   try {
-    const oauthResult = await appendViaOAuthSheets(req.body);
-    if (oauthResult) {
-      return res.json(oauthResult);
-    }
-
     const scriptUrl = readScriptUrl();
 
     if (scriptUrl) {
