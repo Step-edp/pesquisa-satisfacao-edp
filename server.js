@@ -55,6 +55,30 @@ function buildRow(data) {
   ];
 }
 
+async function appendViaOAuthSheets(data) {
+  const clientId = process.env.GOOGLE_CLIENT_ID;
+  const clientSecret = process.env.GOOGLE_CLIENT_SECRET;
+  const refreshToken = process.env.GOOGLE_REFRESH_TOKEN;
+
+  if (!clientId || !clientSecret || !refreshToken) {
+    return null;
+  }
+
+  const { google } = require('googleapis');
+  const oauth2 = new google.auth.OAuth2(clientId, clientSecret);
+  oauth2.setCredentials({ refresh_token: refreshToken });
+
+  const sheets = google.sheets({ version: 'v4', auth: oauth2 });
+  await sheets.spreadsheets.values.append({
+    spreadsheetId: SPREADSHEET_ID,
+    range: 'A:Q',
+    valueInputOption: 'USER_ENTERED',
+    requestBody: { values: [buildRow(data)] },
+  });
+
+  return { success: true };
+}
+
 async function appendViaAppsScript(scriptUrl, data) {
   let response = await fetch(scriptUrl, {
     method: 'POST',
@@ -115,6 +139,11 @@ async function appendViaGoogleApi(data) {
 
 app.post('/api/submit', async (req, res) => {
   try {
+    const oauthResult = await appendViaOAuthSheets(req.body);
+    if (oauthResult) {
+      return res.json(oauthResult);
+    }
+
     const scriptUrl = readScriptUrl();
 
     if (scriptUrl) {
@@ -130,7 +159,7 @@ app.post('/api/submit', async (req, res) => {
     return res.status(503).json({
       success: false,
       error:
-        'Conexão com a planilha não configurada. Publique o Google Apps Script e cole a URL em config.js (SCRIPT_URL). Veja CONFIGURACAO.txt.',
+        'Conexão com a planilha não configurada. Configure as credenciais Google no Railway ou publique o Apps Script.',
       spreadsheetUrl: `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/edit`,
     });
   } catch (err) {
