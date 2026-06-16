@@ -24,7 +24,7 @@ function readScriptUrl() {
   const configPath = path.join(ROOT, 'config.js');
   if (fs.existsSync(configPath)) {
     const content = fs.readFileSync(configPath, 'utf8');
-    const match = content.match(/const SCRIPT_URL = '([^']+)'/);
+    const match = content.match(/const SCRIPT_URL\s*=\s*[\s\S]*?'([^']+)'/);
     if (match && match[1] && !match[1].includes('COLE')) {
       return match[1];
     }

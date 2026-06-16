@@ -1,0 +1,4 @@
+run-test.js
+params.json
+**/*.json
+!appsscript.json

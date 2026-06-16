@@ -17,6 +17,16 @@ function submitSurvey(data) {
   return saveToSheet_(data);
 }
 
+function autorizar() {
+  return saveToSheet_({
+    created_at: Utilities.formatDate(new Date(), 'America/Sao_Paulo', 'yyyy-MM-dd HH:mm:ss'),
+    nome: 'Autorizacao',
+    telefone: 'Nao Informado',
+    comentario: 'Primeira execucao - autorizacao',
+    nao_responder: '1',
+  });
+}
+
 function doPost(e) {
   try {
     const data = JSON.parse(e.postData.contents);

@@ -1,17 +1,10 @@
 {
-  "scriptId": "1ByZo725bvIF6IXK46aqjLtwd0whKYRvfyW0TdYt2ycZ7RMqi2Vx0g0bp",
+  "scriptId": "1zmUJ_IToqoGKEiUhoCcyFRLpCnEUQS05ZzxMbFurjQZ3Gdg8D84N7t_4",
   "rootDir": "",
-  "parentId": "1HTIY1vi21DPYVLtyrwiqCIzddQqioifGobZWUV1lu9o",
-  "scriptExtensions": [
-    ".js",
-    ".gs"
-  ],
-  "htmlExtensions": [
-    ".html"
-  ],
-  "jsonExtensions": [
-    ".json"
-  ],
+  "parentId": "10w3JN3JqSQYCQ5bHN79RPzs7-2wBHmpOwQqfL9tR7Bc",
+  "scriptExtensions": [".js", ".gs"],
+  "htmlExtensions": [".html"],
+  "jsonExtensions": [".json"],
   "filePushOrder": [],
   "skipSubdirectories": false
 }
