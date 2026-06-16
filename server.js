@@ -119,13 +119,17 @@ async function appendViaGoogleApi(data) {
   return { success: true };
 }
 
-app.get('/', (req, res) => {
+function sendSurveyApp(req, res) {
   const scriptUrl = readScriptUrl();
   if (scriptUrl && !req.query.stay) {
+    res.set('Cache-Control', 'no-store');
     return res.redirect(302, scriptUrl);
   }
   res.sendFile(path.join(ROOT, 'index.html'));
-});
+}
+
+app.get('/', sendSurveyApp);
+app.get('/index.html', sendSurveyApp);
 
 app.use(express.static(ROOT, { index: false }));
 
