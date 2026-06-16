@@ -276,20 +276,13 @@ async function submitData(payload) {
     });
   }
 
-  const url = typeof SUBMIT_URL !== 'undefined' ? SUBMIT_URL : SCRIPT_URL;
+  const url = typeof SUBMIT_URL !== 'undefined' ? SUBMIT_URL : '/api/submit';
 
-  if (!url && (!SCRIPT_URL || SCRIPT_URL === '')) {
-    throw new Error(
-      'Conexão com a planilha não configurada.\n\n' +
-        '1. Abra a planilha → Extensões → Apps Script\n' +
-        '2. Cole o código de google-apps-script/Code.gs\n' +
-        '3. Implantar → App da Web → Qualquer pessoa\n' +
-        '4. Cole a URL /exec em config.js (SCRIPT_URL)\n\n' +
-        'Veja CONFIGURACAO.txt para detalhes.'
-    );
+  if (!url) {
+    throw new Error('Conexão com a planilha não configurada.');
   }
 
-  const response = await fetch(url || '/api/submit', {
+  const response = await fetch(url, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(payload),
