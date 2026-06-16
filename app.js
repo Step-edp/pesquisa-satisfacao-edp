@@ -306,6 +306,16 @@ function setLoading(visible) {
   document.getElementById('loading').classList.toggle('hidden', !visible);
 }
 
+function resetSurvey() {
+  Object.keys(answers).forEach((key) => delete answers[key]);
+  currentStep = -1;
+  document.getElementById('flow-content').innerHTML = '';
+  document.getElementById('flow-block-header').classList.add('hidden');
+  document.getElementById('flow-block-header').innerHTML = '';
+  hideProgress();
+  showStep('step-consent');
+}
+
 async function handleSubmit(payload, successStepId) {
   setLoading(true);
   try {
@@ -338,5 +348,9 @@ document.addEventListener('DOMContentLoaded', () => {
     } else {
       goNext();
     }
+  });
+
+  document.querySelectorAll('.btn-restart').forEach((btn) => {
+    btn.addEventListener('click', resetSurvey);
   });
 });
