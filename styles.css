@@ -46,6 +46,12 @@ body {
   margin-bottom: 16px;
 }
 
+.logo-img {
+  max-height: 56px;
+  width: auto;
+  display: inline-block;
+}
+
 .logo-edp {
   display: inline-block;
   font-size: 2rem;
