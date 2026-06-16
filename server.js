@@ -56,25 +56,24 @@ function buildRow(data) {
 
 async function appendViaAppsScript(scriptUrl, data) {
   const body = JSON.stringify(data);
+  let url = scriptUrl;
+  let response;
 
-  let response = await fetch(scriptUrl, {
-    method: 'POST',
-    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-    body,
-    redirect: 'manual',
-  });
-
-  if (response.status >= 300 && response.status < 400) {
-    const location = response.headers.get('location');
-    if (!location) {
-      throw new Error('Redirecionamento inválido do Google Apps Script.');
-    }
-    response = await fetch(location, {
+  for (let i = 0; i < 5; i++) {
+    response = await fetch(url, {
       method: 'POST',
       headers: { 'Content-Type': 'text/plain;charset=utf-8' },
       body,
-      redirect: 'follow',
+      redirect: 'manual',
     });
+
+    if (response.status >= 300 && response.status < 400) {
+      const location = response.headers.get('location');
+      if (!location) break;
+      url = location;
+      continue;
+    }
+    break;
   }
 
   const text = await response.text();
@@ -121,6 +120,10 @@ async function appendViaGoogleApi(data) {
 }
 
 app.get('/', (req, res) => {
+  const scriptUrl = readScriptUrl();
+  if (scriptUrl && !req.query.stay) {
+    return res.redirect(302, scriptUrl);
+  }
   res.sendFile(path.join(ROOT, 'index.html'));
 });
 

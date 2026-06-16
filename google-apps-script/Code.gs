@@ -12,7 +12,6 @@
  */
 
 const SPREADSHEET_ID = '10w3JN3JqSQYCQ5bHN79RPzs7-2wBHmpOwQqfL9tR7Bc';
-const RAILWAY_URL = 'https://pesquisa-satisfacao-edp-production.up.railway.app';
 
 function submitSurvey(data) {
   try {
@@ -45,12 +44,10 @@ function doPost(e) {
 }
 
 function doGet() {
-  return HtmlService.createHtmlOutput(
-    '<!DOCTYPE html><html><head>' +
-      '<meta http-equiv="refresh" content="0;url=' + RAILWAY_URL + '">' +
-      '<script>window.top.location.replace("' + RAILWAY_URL + '");</script>' +
-      '</head><body><p style="font-family:sans-serif;text-align:center;margin-top:2rem;">Redirecionando...</p></body></html>'
-  ).setTitle('Pesquisa de Satisfação — EDP');
+  return HtmlService.createTemplateFromFile('Index')
+    .evaluate()
+    .setTitle('Pesquisa de Satisfação — EDP')
+    .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
 }
 
 function include(filename) {
