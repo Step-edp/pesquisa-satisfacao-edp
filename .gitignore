@@ -4,3 +4,4 @@ config.local.json
 .env
 .DS_Store
 *.log
+scripts/test-*.js

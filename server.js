@@ -56,18 +56,31 @@ function buildRow(data) {
 }
 
 async function appendViaAppsScript(scriptUrl, data) {
-  const response = await fetch(scriptUrl, {
+  let response = await fetch(scriptUrl, {
     method: 'POST',
     headers: { 'Content-Type': 'text/plain;charset=utf-8' },
     body: JSON.stringify(data),
+    redirect: 'manual',
   });
+
+  if (response.status >= 300 && response.status < 400) {
+    const location = response.headers.get('location');
+    if (location) {
+      response = await fetch(location, { method: 'GET', redirect: 'follow' });
+    }
+  }
 
   const text = await response.text();
   let result;
   try {
     result = JSON.parse(text);
   } catch {
-    throw new Error('Resposta inválida do Google Apps Script.');
+    const jsonMatch = text.match(/\{[\s\S]*"success"[\s\S]*\}/);
+    if (jsonMatch) {
+      result = JSON.parse(jsonMatch[0]);
+    } else {
+      throw new Error('Resposta inválida do Google Apps Script.');
+    }
   }
 
   if (!response.ok || !result.success) {
